@@ -12,7 +12,7 @@ import {
 } from 'docx';
 import { saveAs } from 'file-saver';
 
-export async function exportToDocx(formData, concerns) {
+export async function exportToDocx(formData, concerns, perfExpectations, improvementActions, timelineText) {
   const {
     employeeName,
     employeeTitle,
@@ -223,14 +223,14 @@ export async function exportToDocx(formData, concerns) {
     );
   });
 
-  // Consequences
+  // Performance Expectations
   children.push(
     new Paragraph({
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 300, after: 100 },
       children: [
         new TextRun({
-          text: 'Consequences of non-improvement',
+          text: 'Performance expectations',
           bold: true,
           size: 26,
           font: 'Calibri',
@@ -240,16 +240,92 @@ export async function exportToDocx(formData, concerns) {
   );
   children.push(
     new Paragraph({
-      spacing: { after: 300 },
+      spacing: { after: 120 },
       children: [
         new TextRun({
-          text: `Failure to meet the expectations outlined in this plan by ${reviewPeriodEnd} may result in further disciplinary action, up to and including termination of employment.`,
+          text: `Effective immediately, ${employeeName} is expected to:`,
           size: 22,
           font: 'Calibri',
         }),
       ],
     })
   );
+  for (const item of perfExpectations.filter(Boolean)) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 80 },
+        bullet: { level: 0 },
+        children: [
+          new TextRun({ text: item, size: 22, font: 'Calibri' }),
+        ],
+      })
+    );
+  }
+
+  // Improvement Actions
+  children.push(
+    new Paragraph({
+      heading: HeadingLevel.HEADING_2,
+      spacing: { before: 300, after: 100 },
+      children: [
+        new TextRun({
+          text: 'Improvement actions',
+          bold: true,
+          size: 26,
+          font: 'Calibri',
+        }),
+      ],
+    })
+  );
+  children.push(
+    new Paragraph({
+      spacing: { after: 120 },
+      children: [
+        new TextRun({
+          text: `To support improvement, ${employeeName} is expected to:`,
+          size: 22,
+          font: 'Calibri',
+        }),
+      ],
+    })
+  );
+  for (const item of improvementActions.filter(Boolean)) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 80 },
+        bullet: { level: 0 },
+        children: [
+          new TextRun({ text: item, size: 22, font: 'Calibri' }),
+        ],
+      })
+    );
+  }
+
+  // Timeline and Review
+  children.push(
+    new Paragraph({
+      heading: HeadingLevel.HEADING_2,
+      spacing: { before: 300, after: 100 },
+      children: [
+        new TextRun({
+          text: 'Timeline and review',
+          bold: true,
+          size: 26,
+          font: 'Calibri',
+        }),
+      ],
+    })
+  );
+  for (const para of timelineText.split('\n').filter(Boolean)) {
+    children.push(
+      new Paragraph({
+        spacing: { after: 120 },
+        children: [
+          new TextRun({ text: para, size: 22, font: 'Calibri' }),
+        ],
+      })
+    );
+  }
 
   // Signature lines
   children.push(

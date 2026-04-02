@@ -3,6 +3,8 @@ import {
   ROLE_LEVELS,
   CONCERN_CATEGORIES,
   getDefaultDescription,
+  getDefaultPerformanceExpectations,
+  getDefaultImprovementActions,
 } from './concernData';
 import { exportToDocx } from './exportDocx';
 
@@ -170,7 +172,7 @@ function Step2Concerns({ selected, setSelected, businessPlanRefs, setBusinessPla
   );
 }
 
-function Step3Details({ selected, roleLevel, businessPlanRefs, details, setDetails }) {
+function Step3Details({ selected, roleLevel, businessPlanRefs, details, setDetails, perfExpectations, setPerfExpectations, improvementActions, setImprovementActions, timelineText, setTimelineText, form }) {
   const cats = CONCERN_CATEGORIES.filter((c) => selected.includes(c.id));
 
   const ensureDefaults = (catId) => {
@@ -189,12 +191,40 @@ function Step3Details({ selected, roleLevel, businessPlanRefs, details, setDetai
     }));
   };
 
+  const defaultPerfExp = getDefaultPerformanceExpectations(selected, roleLevel);
+  const currentPerfExp = perfExpectations.length > 0 ? perfExpectations : defaultPerfExp;
+
+  const defaultActions = getDefaultImprovementActions(roleLevel);
+  const currentActions = improvementActions.length > 0 ? improvementActions : defaultActions;
+
+  const defaultTimeline = `${form.employeeName || 'The employee'}'s progress will be reviewed over the next ${form.reviewPeriod || '30 days'}. During this period, management will assess whether sustained improvement has been made in the areas identified above.\n\nFailure to demonstrate immediate and sustained improvement may result in further disciplinary action, up to and including termination of employment.`;
+  const currentTimeline = timelineText || defaultTimeline;
+
+  const updatePerfExp = (idx, value) => {
+    const updated = [...currentPerfExp];
+    updated[idx] = value;
+    setPerfExpectations(updated);
+  };
+
+  const addPerfExp = () => setPerfExpectations([...currentPerfExp, '']);
+  const removePerfExp = (idx) => setPerfExpectations(currentPerfExp.filter((_, i) => i !== idx));
+
+  const updateAction = (idx, value) => {
+    const updated = [...currentActions];
+    updated[idx] = value;
+    setImprovementActions(updated);
+  };
+
+  const addAction = () => setImprovementActions([...currentActions, '']);
+  const removeAction = (idx) => setImprovementActions(currentActions.filter((_, i) => i !== idx));
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold text-gray-900">Edit concern details</h2>
       <p className="text-sm text-gray-500">
         Default language has been generated based on the {roleLevel || 'selected'} role level. Edit as needed.
       </p>
+
       {cats.map((cat) => {
         const data = ensureDefaults(cat.id);
         return (
@@ -237,11 +267,90 @@ function Step3Details({ selected, roleLevel, businessPlanRefs, details, setDetai
           </div>
         );
       })}
+
+      {/* Performance Expectations */}
+      <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-gray-900">Performance expectations</h3>
+          <button
+            type="button"
+            onClick={addPerfExp}
+            className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+          >
+            + Add item
+          </button>
+        </div>
+        <p className="text-xs text-gray-500">What the employee is expected to do, effective immediately.</p>
+        {currentPerfExp.map((item, idx) => (
+          <div key={idx} className="flex gap-2">
+            <textarea
+              value={item}
+              onChange={(e) => updatePerfExp(idx, e.target.value)}
+              rows={2}
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            {currentPerfExp.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removePerfExp(idx)}
+                className="text-gray-400 hover:text-red-500 text-sm px-1 self-start mt-2"
+              >
+                x
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Improvement Actions */}
+      <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-gray-900">Improvement actions</h3>
+          <button
+            type="button"
+            onClick={addAction}
+            className="text-xs text-blue-600 hover:text-blue-800 font-medium"
+          >
+            + Add item
+          </button>
+        </div>
+        <p className="text-xs text-gray-500">What the employee will do to support improvement (check-ins, updates, etc.).</p>
+        {currentActions.map((item, idx) => (
+          <div key={idx} className="flex gap-2">
+            <textarea
+              value={item}
+              onChange={(e) => updateAction(idx, e.target.value)}
+              rows={2}
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            {currentActions.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeAction(idx)}
+                className="text-gray-400 hover:text-red-500 text-sm px-1 self-start mt-2"
+              >
+                x
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Timeline and Review */}
+      <div className="border border-gray-200 rounded-lg p-4 space-y-3">
+        <h3 className="font-semibold text-gray-900">Timeline and review</h3>
+        <textarea
+          value={currentTimeline}
+          onChange={(e) => setTimelineText(e.target.value)}
+          rows={4}
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
     </div>
   );
 }
 
-function Step4Preview({ form, selected, details, businessPlanRefs }) {
+function Step4Preview({ form, selected, details, businessPlanRefs, perfExpectations, improvementActions, timelineText }) {
   const previewRef = useRef(null);
   const [copied, setCopied] = useState(false);
 
@@ -251,6 +360,15 @@ function Step4Preview({ form, selected, details, businessPlanRefs }) {
     if (details[catId]) return details[catId];
     return getDefaultDescription(catId, form.roleLevel, businessPlanRefs[catId] || '');
   };
+
+  const defaultPerfExp = getDefaultPerformanceExpectations(selected, form.roleLevel);
+  const finalPerfExp = perfExpectations.length > 0 ? perfExpectations : defaultPerfExp;
+
+  const defaultActions = getDefaultImprovementActions(form.roleLevel);
+  const finalActions = improvementActions.length > 0 ? improvementActions : defaultActions;
+
+  const defaultTimeline = `${form.employeeName || 'The employee'}'s progress will be reviewed over the next ${form.reviewPeriod || '30 days'}. During this period, management will assess whether sustained improvement has been made in the areas identified above.\n\nFailure to demonstrate immediate and sustained improvement may result in further disciplinary action, up to and including termination of employment.`;
+  const finalTimeline = timelineText || defaultTimeline;
 
   const concernsForExport = cats.map((cat) => ({
     ...cat,
@@ -267,7 +385,7 @@ function Step4Preview({ form, selected, details, businessPlanRefs }) {
 
   const handlePrint = () => window.print();
 
-  const handleDocx = () => exportToDocx(form, concernsForExport);
+  const handleDocx = () => exportToDocx(form, concernsForExport, finalPerfExp, finalActions, finalTimeline);
 
   return (
     <div className="space-y-4">
@@ -358,12 +476,30 @@ function Step4Preview({ form, selected, details, businessPlanRefs }) {
         </div>
 
         <div>
-          <h2 className="font-bold text-base mb-2">Consequences of non-improvement</h2>
-          <p>
-            Failure to meet the expectations outlined in this plan by{' '}
-            {form.reviewPeriodEnd} may result in further disciplinary action, up to and
-            including termination of employment.
-          </p>
+          <h2 className="font-bold text-base mb-2">Performance expectations</h2>
+          <p className="mb-2">Effective immediately, {form.employeeName} is expected to:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            {finalPerfExp.filter(Boolean).map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="font-bold text-base mb-2">Improvement actions</h2>
+          <p className="mb-2">To support improvement, {form.employeeName} is expected to:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            {finalActions.filter(Boolean).map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="font-bold text-base mb-2">Timeline and review</h2>
+          {finalTimeline.split('\n').filter(Boolean).map((para, idx) => (
+            <p key={idx} className={idx > 0 ? 'mt-2' : ''}>{para}</p>
+          ))}
         </div>
 
         <div className="pt-6 space-y-8">
@@ -404,6 +540,9 @@ export default function App() {
   const [selected, setSelected] = useState([]);
   const [businessPlanRefs, setBusinessPlanRefs] = useState({});
   const [details, setDetails] = useState({});
+  const [perfExpectations, setPerfExpectations] = useState([]);
+  const [improvementActions, setImprovementActions] = useState([]);
+  const [timelineText, setTimelineText] = useState('');
 
   const canNext =
     step === 0
@@ -416,6 +555,9 @@ export default function App() {
   const setFormWrapped = (newForm) => {
     if (newForm.roleLevel !== form.roleLevel) {
       setDetails({});
+      setPerfExpectations([]);
+      setImprovementActions([]);
+      setTimelineText('');
     }
     setForm(newForm);
   };
@@ -451,6 +593,13 @@ export default function App() {
               businessPlanRefs={businessPlanRefs}
               details={details}
               setDetails={setDetails}
+              perfExpectations={perfExpectations}
+              setPerfExpectations={setPerfExpectations}
+              improvementActions={improvementActions}
+              setImprovementActions={setImprovementActions}
+              timelineText={timelineText}
+              setTimelineText={setTimelineText}
+              form={form}
             />
           )}
           {step === 3 && (
@@ -459,6 +608,9 @@ export default function App() {
               selected={selected}
               details={details}
               businessPlanRefs={businessPlanRefs}
+              perfExpectations={perfExpectations}
+              improvementActions={improvementActions}
+              timelineText={timelineText}
             />
           )}
 
@@ -490,6 +642,9 @@ export default function App() {
                   setSelected([]);
                   setBusinessPlanRefs({});
                   setDetails({});
+                  setPerfExpectations([]);
+                  setImprovementActions([]);
+                  setTimelineText('');
                 }}
                 className="px-5 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
               >
@@ -508,6 +663,9 @@ export default function App() {
             selected={selected}
             details={details}
             businessPlanRefs={businessPlanRefs}
+            perfExpectations={perfExpectations}
+            improvementActions={improvementActions}
+            timelineText={timelineText}
           />
         </div>
       )}

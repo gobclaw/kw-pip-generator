@@ -275,6 +275,215 @@ const defaultDescriptions = {
   },
 };
 
+const defaultPerformanceExpectations = {
+  'deal-execution': {
+    junior: [
+      'Produce accurate underwriting models with minimal errors and submit them for review before deadlines.',
+      'Complete all assigned due diligence tasks within established timelines, escalating blockers promptly.',
+      'Demonstrate a working command of core CRE valuation metrics (cap rate, IRR, cash-on-cash, equity multiple) in all analytical work.',
+    ],
+    mid: [
+      'Independently produce investment-grade underwriting packages that require minimal senior revision.',
+      'Identify and quantify key risk factors in every deal, presenting balanced recommendations to the investment committee.',
+      'Lead due diligence workstreams end-to-end and ensure quality control across junior team members\' output.',
+    ],
+    senior: [
+      'Set and enforce firm-wide underwriting standards, ensuring consistency and rigor across the entire deal pipeline.',
+      'Exercise strategic judgment on deal selection, risk tolerance, and capital allocation at the portfolio level.',
+      'Take personal accountability for the quality and integrity of every transaction that advances to the investment committee.',
+    ],
+  },
+  'asset-management': {
+    junior: [
+      'Maintain accurate and timely property performance reports, with all variances to budget flagged within 48 hours.',
+      'Track lease expirations and tenant obligations proactively, ensuring no deadlines are missed.',
+      'Contribute to the execution of asset business plans by completing assigned tasks on schedule and with accuracy.',
+    ],
+    mid: [
+      'Drive business plan execution across the assigned portfolio, meeting or exceeding NOI and occupancy targets.',
+      'Identify and pursue value creation opportunities proactively, including lease-up, capital improvement, and expense reduction initiatives.',
+      'Take ownership of tenant relationship management and coordinate effectively with property management, leasing, and capital markets teams.',
+    ],
+    senior: [
+      'Set the strategic direction for asset management across the portfolio and hold the team accountable for business plan execution.',
+      'Take personal ownership of portfolio-level performance outcomes, including NOI growth, occupancy, and investor return targets.',
+      'Demonstrate strategic vision in identifying repositioning, redevelopment, or value-add opportunities at the platform level.',
+    ],
+  },
+  'analytical-quality': {
+    junior: [
+      'Produce clean, error-free analytical work product, thoroughly checking all models, reports, and presentations before submission.',
+      'Develop and consistently follow a personal quality control checklist for all deliverables.',
+      'Reduce error rate in analytical output to a level that does not require significant rework by senior team members.',
+    ],
+    mid: [
+      'Deliver analytical work product that can be relied upon for decision-making without extensive senior review.',
+      'Implement quality control processes for both personal output and the work of junior team members.',
+      'Flag analytical complexities, limitations, or assumptions proactively in all deliverables.',
+    ],
+    senior: [
+      'Establish and enforce quality standards for all analytical output produced by the team.',
+      'Implement review processes that prevent errors from reaching senior stakeholders or decision-makers.',
+      'Take accountability for the integrity and reliability of all analytical work produced under your leadership.',
+    ],
+  },
+  'cross-functional': {
+    junior: [
+      'Communicate clearly and promptly with cross-functional counterparts in legal, accounting, property management, and other groups.',
+      'Track and follow up on all outstanding items with a documented status tracker, escalating delays before they become bottlenecks.',
+      'Build productive working relationships across departments through consistent professionalism and follow-through.',
+    ],
+    mid: [
+      'Take ownership of cross-functional coordination for all assigned projects, ensuring clear communication of timelines and deliverables.',
+      'Proactively resolve issues that arise between teams, serving as a reliable single point of contact.',
+      'Drive cross-functional workstreams to completion without requiring escalation or senior intervention.',
+    ],
+    senior: [
+      'Build collaborative processes across departments that eliminate silos and ensure seamless execution on platform-level initiatives.',
+      'Model the partnership and communication standards expected throughout the organization.',
+      'Take accountability for cross-functional execution outcomes and establish frameworks that scale beyond individual projects.',
+    ],
+  },
+  'investor-communication': {
+    junior: [
+      'Prepare accurate, professional investor-facing materials with zero factual errors before submission.',
+      'Support senior team members in preparing for investor meetings by providing timely, well-organized backup materials.',
+      'Demonstrate awareness of the sensitivity and importance of all investor communications through careful review and attention to detail.',
+    ],
+    mid: [
+      'Handle routine investor inquiries independently with professionalism, timeliness, and substantive depth.',
+      'Prepare compelling materials for investor meetings that clearly communicate performance, strategy, and outlook.',
+      'Represent the firm effectively in stakeholder interactions, demonstrating confidence and command of the material.',
+    ],
+    senior: [
+      'Own and deepen key investor relationships, serving as a trusted strategic partner to the firm\'s most important stakeholders.',
+      'Communicate the firm\'s strategy and performance with clarity, conviction, and executive presence.',
+      'Set the standard for investor communication quality across the team and ensure all stakeholder touchpoints reflect the firm\'s brand.',
+    ],
+  },
+  'market-knowledge': {
+    junior: [
+      'Develop and maintain a working knowledge of target markets, including key submarkets, comparable transactions, and competitive dynamics.',
+      'Contribute meaningfully to market research and deal sourcing efforts with accurate, timely research deliverables.',
+      'Proactively expand market knowledge through broker outreach, industry publications, and attendance at relevant events.',
+    ],
+    mid: [
+      'Maintain deep market expertise across target markets and be recognized as a market resource within the team.',
+      'Cultivate productive broker and industry relationships that generate deal flow and market intelligence.',
+      'Drive proactive deal sourcing and contribute market insights that inform investment strategy decisions.',
+    ],
+    senior: [
+      'Set the market strategy for the team and ensure a robust, diversified pipeline of investment opportunities.',
+      'Build and maintain the firm\'s market presence through key relationships, conference participation, and thought leadership.',
+      'Leverage your experience and network to create competitive advantages in sourcing differentiated deal flow.',
+    ],
+  },
+  'disposition-strategy': {
+    junior: [
+      'Support disposition workstreams reliably, including preparation of accurate marketing materials and organized data room management.',
+      'Coordinate with buyers and brokers in a timely manner, meeting all deadlines in the disposition timeline.',
+      'Develop a working understanding of the full disposition process from pricing analysis through closing.',
+    ],
+    mid: [
+      'Drive disposition processes end-to-end, from pricing analysis through buyer engagement and closing.',
+      'Manage broker selection and engagement effectively, ensuring competitive processes that maximize proceeds.',
+      'Take ownership of disposition timelines and coordinate with internal teams and external parties to prevent delays.',
+    ],
+    senior: [
+      'Set and execute portfolio disposition strategy with well-supported timing and pricing decisions.',
+      'Take accountability for maximizing disposition proceeds through strategic market timing, buyer targeting, and process management.',
+      'Demonstrate strategic judgment that reflects deep market understanding and alignment with investor return objectives.',
+    ],
+  },
+  'team-leadership': {
+    junior: [
+      'Be a reliable and collaborative team member, actively supporting colleagues and contributing to team goals.',
+      'Receive and act on feedback constructively, demonstrating a growth mindset and willingness to improve.',
+      'Contribute positively to team morale and productivity through professional behavior and shared accountability.',
+    ],
+    mid: [
+      'Actively mentor and develop junior team members, providing clear direction and constructive, timely feedback.',
+      'Invest in the professional growth of direct reports by creating development opportunities and regular coaching touchpoints.',
+      'Contribute to building a high-performing team culture rooted in accountability, collaboration, and continuous improvement.',
+    ],
+    senior: [
+      'Build and lead a high-performing team, creating a culture of accountability, development, and excellence.',
+      'Take personal ownership of talent outcomes, including retention, development, and succession planning.',
+      'Demonstrate the leadership presence and people management skills that attract and retain top talent at the firm.',
+    ],
+  },
+  'consistency': {
+    junior: [
+      'Deliver consistent, reliable work product that meets quality standards every time, not intermittently.',
+      'Meet all deadlines; when delays are unavoidable, communicate proactively and provide revised timelines before the original deadline passes.',
+      'Establish personal routines and systems that ensure consistent output quality across all assignments.',
+    ],
+    mid: [
+      'Maintain a consistently high level of performance across all areas of responsibility without lapses in quality or follow-through.',
+      'Manage workload proactively and communicate capacity constraints before they affect deliverables or team productivity.',
+      'Set an example of dependability and accountability for the team through sustained, visible engagement.',
+    ],
+    senior: [
+      'Be a model of consistency and reliability at the leadership level, maintaining steady engagement across all responsibilities.',
+      'Follow through on all commitments without exception, setting the accountability standard the organization expects from its senior leaders.',
+      'Eliminate any perception of uneven engagement that undermines team confidence or external stakeholder trust.',
+    ],
+  },
+  'initiative': {
+    junior: [
+      'Proactively identify tasks and areas for contribution beyond explicitly assigned work.',
+      'Take ownership of assigned responsibilities fully, bringing ideas and solutions rather than only questions.',
+      'Demonstrate genuine engagement with the work and a visible desire to grow, learn, and add value to the team.',
+    ],
+    mid: [
+      'Take proactive ownership of your areas of responsibility, identifying and pursuing opportunities without waiting to be asked.',
+      'Drive projects forward independently, anticipating needs and removing obstacles before they require escalation.',
+      'Demonstrate the entrepreneurial drive and self-direction that define success at this level.',
+    ],
+    senior: [
+      'Drive strategic initiatives and identify platform-level opportunities that create value for the firm.',
+      'Model an ownership mentality that inspires the entire team and sets the standard for proactive leadership.',
+      'Demonstrate the strategic vision and independent judgment expected of someone in a senior leadership role.',
+    ],
+  },
+};
+
+const defaultImprovementActions = {
+  junior: [
+    'Attend and actively participate in regular check-ins with their manager.',
+    'Provide status updates on key assignments and outstanding action items on a recurring basis.',
+    'Identify obstacles early and communicate them promptly, along with proposed solutions or support needed.',
+    'Demonstrate measurable improvement in the specific areas identified above through consistent daily performance.',
+  ],
+  mid: [
+    'Attend and actively participate in regular check-ins with their manager, coming prepared with updates on all active workstreams.',
+    'Provide proactive status updates on key assignments, flagging risks and proposed mitigations before deadlines are impacted.',
+    'Seek and incorporate feedback from peers, direct reports, and leadership to address the identified concerns.',
+    'Demonstrate sustained, measurable improvement in the areas identified above, with evidence visible to stakeholders beyond the direct manager.',
+  ],
+  senior: [
+    'Attend and actively participate in regular check-ins with their manager, providing candid self-assessment on progress against this plan.',
+    'Provide strategic-level updates on key initiatives, demonstrating proactive leadership and accountability for outcomes.',
+    'Actively seek 360-degree feedback from peers, direct reports, and senior leadership to identify blind spots and calibrate improvement efforts.',
+    'Demonstrate sustained, visible improvement that restores stakeholder confidence and meets the leadership standard expected at this level.',
+  ],
+};
+
+export function getDefaultPerformanceExpectations(selectedIds, roleLevel) {
+  const tone = getToneLevel(roleLevel || 'Analyst');
+  const expectations = [];
+  for (const id of selectedIds) {
+    const items = defaultPerformanceExpectations[id]?.[tone];
+    if (items) expectations.push(...items);
+  }
+  return expectations;
+}
+
+export function getDefaultImprovementActions(roleLevel) {
+  const tone = getToneLevel(roleLevel || 'Analyst');
+  return defaultImprovementActions[tone] || defaultImprovementActions.junior;
+}
+
 export function getDefaultDescription(categoryId, roleLevel, businessPlanRef) {
   const tone = getToneLevel(roleLevel || 'Analyst');
   const data = defaultDescriptions[categoryId]?.[tone];
